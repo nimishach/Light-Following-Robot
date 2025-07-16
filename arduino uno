@@ -1,0 +1,82 @@
+int IN1 = 4;
+int IN2 = 5;
+int IN3 = 13;
+int IN4 = 12;
+
+int REnable = 10;
+int LEnable = 11;
+int motor_speed = 60;
+
+#define leftInput A0
+#define rightInput A1
+
+void setup() {
+Serial.begin(9600);
+Serial.println("GPIO test!");
+pinMode(IN1, OUTPUT);
+pinMode(IN2, OUTPUT);
+pinMode(IN3, OUTPUT);
+pinMode(IN4, OUTPUT);
+pinMode(REnable, OUTPUT);
+pinMode(LEnable, OUTPUT);
+analogWrite(10, motor_speed);
+analogWrite(11, motor_speed);
+}
+
+void loop() {
+int ldrright = analogRead(rightInput);
+int ldrleft = analogRead(leftInput);
+Serial.print("Right : ");
+Serial.println(ldrright);
+Serial.print("Left : ");
+Serial.println(ldrleft);
+if (ldrright > 625 && ldrleft > 153) {
+Serial.println("F");
+move_forward();
+}
+if (ldrright <= 625 && ldrleft > 153) {
+Serial.println("R");
+turn_right();
+}
+if (ldrright > 625 && ldrleft <= 153) {
+Serial.println("L");
+turn_left();
+}
+if (ldrright <= 625 && ldrleft <= 153) {
+Serial.println("S");
+move_stop();
+}
+delay(50);
+}
+
+void move_forward() {
+digitalWrite(IN1, LOW);
+digitalWrite(IN2, HIGH);
+digitalWrite(IN3, HIGH);
+digitalWrite(IN4, LOW);
+}
+void turn_left() {
+digitalWrite(IN1, LOW);
+digitalWrite(IN2, HIGH);
+digitalWrite(IN3, LOW);
+digitalWrite(IN4, HIGH);
+}
+void turn_right() {
+digitalWrite(IN1, HIGH);
+digitalWrite(IN2, LOW);
+digitalWrite(IN3, HIGH);
+digitalWrite(IN4, LOW);
+}
+void move_stop() {
+digitalWrite(IN1, LOW);
+digitalWrite(IN2, LOW);
+digitalWrite(IN3, LOW);
+digitalWrite(IN4, LOW);
+}
+void backward() {
+digitalWrite(IN1, HIGH);
+digitalWrite(IN2, LOW);
+digitalWrite(IN3, LOW);
+digitalWrite(IN4, HIGH);
+// delay(5000);
+}
